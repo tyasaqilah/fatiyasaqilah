@@ -25,21 +25,29 @@ if (!empty($_GET['message']) && $_GET['message'] == 'success') {
 			<td align="center"><h4>Nilai Rata-rata</h4></td>
         	<td align="center"><h4>Grade</h4></td>
         	<td align="center"><h4>Keterangan</h4></td>
+        	<td align="center"><h4>Action</h4></td>
+
  </tr>
 		</thead>
 		<tbody>
  <?php 
+  include "koneksi.php";
+  mysql_select_db("fatyasaqilah");
 	$sql = mysql_query("select * from tblnilai");
 	$no = 1;
-	while($simpan = mysql_fetch_array($sql)) {
+	while($data = mysql_fetch_array($sql)) {
+
 	?>
 <tr>
-        	<td><?php echo $no; ?></td>
+        	<td><?php echo $no++; ?></td>
         	<td><?php echo $data['nim']; ?></td>
         	<td><?php echo $data['nama']; ?></td>
         	<td><?php echo $data['tugas']; ?></td>
         	<td><?php echo $data['uts']; ?></td>
         	<td><?php echo $data['uas']; ?></td>
+        	<td><?php avarageScore($data['tugas'],$data['uts'],$data['uas']) ?></td>
+        	<td><?php gradeScore($data['tugas'],$data['uts'],$data['uas']) ?></td>
+        	<td><?php keterangan($data['tugas'],$data['uts'],$data['uas']) ?></td>
             <td>
             	<a href="edit_nilai.php?id=<?php echo $data['nim']; ?>"><input type="submit" value="Edit" /></a> 
                 <a href="hapus_nilai.php?id=<?php echo $data['nim']; ?>"><input type="reset" value="Delete" /></a>
@@ -50,32 +58,76 @@ if (!empty($_GET['message']) && $_GET['message'] == 'success') {
 	} 
 	?>
 <?php
-$nim = $_POST['nim'];
-$nama = $_POST['nama'];
-$tugas = $_POST['tugas'];
-$uts = $_POST['uts'];
-$uas = $_POST['uas'];
-$rata2 = ($tugas+$uts+$uas)/3;
+function avarageScore($tugas,$uts,$uas)
+{
+	$avarage=$tugas+$uts + $uas;
+	echo $avarage/3;	
+
+}
+
+function gradeScore($tugas,$uts,$uas)
+{
+
+	$rata2 = ($tugas+$uts+$uas)/3;
 if($rata2 > 80){
 	$grade = 'A';
-	$keterangan = 'LULUS';
+	echo $grade;
+	//$keterangan = 'LULUS';
 }
 elseif($rata2 < 80 AND $rata2 > 70){
 	$grade = 'B';
-	$keterangan = 'LULUS';
+	echo $grade;
+	//$keterangan = 'LULUS';
 }
 elseif($rata2 < 70 AND $rata2 > 60){
 	$grade = 'C';
-	$keterangan = 'LULUS';
+	echo $grade;
+	//$keterangan = 'LULUS';
 }
 elseif($rata2  < 60 AND $rata2 > 50){
 	$grade = 'D';
-	$keterangan = 'TIDAK LULUS';
+	echo $grade;
+	//$keterangan = 'TIDAK LULUS';
 }
 elseif($rata2 < 50 AND $rata2 > 10){
 	$grade = 'E';
-	$keterangan = 'TIDAK LULUS';
+	echo $grade;
+	//$keterangan = 'TIDAK LULUS';
 }
+
+}
+
+function keterangan($tugas,$uts,$uas)
+{
+
+	$rata2 = ($tugas+$uts+$uas)/3;
+if($rata2 > 80){
+	$keterangan = 'LULUS';
+	echo $keterangan;
+}
+elseif($rata2 < 80 AND $rata2 > 70){
+	
+	$keterangan = 'LULUS';
+	echo $keterangan;
+}
+elseif($rata2 < 70 AND $rata2 > 60){
+	$keterangan = 'LULUS';
+	echo $keterangan;
+}
+elseif($rata2  < 60 AND $rata2 > 50){
+
+	$keterangan = 'TIDAK LULUS';
+	echo $keterangan;
+}
+elseif($rata2 < 50 AND $rata2 > 10){
+	
+	$keterangan = 'TIDAK LULUS';
+	echo $keterangan;
+}
+
+}
+
+
 ?>
 </thead>
 </tbody><br>
